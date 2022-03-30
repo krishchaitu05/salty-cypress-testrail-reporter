@@ -35,15 +35,6 @@ var CypressTestRailReporter = /** @class */ (function (_super) {
             var executionDateTime = moment().format('L');
             var name = (reporterOptions.runName || 'Automated Test Run') + " - " + executionDateTime;
             var description = executionDateTime;
-            if (reporterOptions.createTestRun === true) {
-                _this.testRail.isRunToday().then(function (res) {
-                    _this.hasBeenCreatedToday = res;
-                    console.log(_this.hasBeenCreatedToday);
-                    if (!_this.hasBeenCreatedToday) {
-                        _this.testRail.createRun(name, description);
-                    }
-                });
-            }
         });
         runner.on('pass', function (test) {
             var _a;
