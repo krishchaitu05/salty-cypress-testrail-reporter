@@ -57,7 +57,7 @@ var CypressTestRailReporter = /** @class */ (function (_super) {
                 var results = caseIds.map(function (caseId) {
                     return {
                         case_id: caseId,
-                        status_id: testrail_interface_1.Status.Failed,
+                        status_id: testrail_interface_1.Status.Automation_fails,
                         comment: "" + test.err.message,
                     };
                 });
