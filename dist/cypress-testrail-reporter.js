@@ -24,7 +24,7 @@ var CypressTestRailReporter = /** @class */ (function (_super) {
     function CypressTestRailReporter(runner, options) {
         var _this = _super.call(this, runner) || this;
         _this.results = [];
-        var testrail_flag = options.testrail_flag;
+        var testrail_flag = process.env.testrail_flag;
         if (testrail_flag) {
             var reporterOptions = options.reporterOptions;
             _this.testRail = new testrail_1.TestRail(reporterOptions);
