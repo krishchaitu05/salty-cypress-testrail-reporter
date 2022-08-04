@@ -18,67 +18,61 @@ var testrail_interface_1 = require("./testrail.interface");
 var chalk = require('chalk');
 var CypressTestRailReporter = /** @class */ (function (_super) {
   __extends(CypressTestRailReporter, _super);
-  // if the testrail_flag value is true =>
-  // navigate into this function
-  // else don't do anything
   function CypressTestRailReporter(runner, options) {
     var _this = _super.call(this, runner) || this;
     _this.results = [];
-    var testrail_flag = process.env.testrail_flag;
-    if (testrail_flag) {
-      var reporterOptions = options.reporterOptions;
-      _this.testRail = new testrail_1.TestRail(reporterOptions);
-      _this.isRun = false;
-      _this.validate(reporterOptions, 'domain');
-      _this.validate(reporterOptions, 'username');
-      _this.validate(reporterOptions, 'password');
-      _this.validate(reporterOptions, 'projectId');
-      _this.validate(reporterOptions, 'suiteId');
-      _this.validate(reporterOptions, 'createTestRun');
-      runner.on('start', function () {
-        console.log("Running Test Case...");
-        var executionDateTime = moment().format('L');
-        var name = (reporterOptions.runName || 'Automated test run') + " - " + executionDateTime;
-        var description = executionDateTime;
-      });
-      runner.on('pass', function (test) {
-        var _a;
-        var caseIds = shared_1.titleToCaseIds(test.title);
-        if (caseIds.length > 0) {
-          var results = caseIds.map(function (caseId) {
-            return {
-              case_id: caseId,
-              status_id: testrail_interface_1.Status.Passed,
-              comment: "Execution time: " + test.duration + "ms",
-            };
-          });
-          (_a = _this.results).push.apply(_a, results);
-        }
-      });
-      runner.on('fail', function (test) {
-        var _a;
-        var caseIds = shared_1.titleToCaseIds(test.title);
-        if (caseIds.length > 0) {
-          var results = caseIds.map(function (caseId) {
-            return {
-              case_id: caseId,
-              status_id: testrail_interface_1.Status.Automation_fails,
-              comment: "" + test.err.message,
-            };
-          });
-          (_a = _this.results).push.apply(_a, results);
-        }
-      });
-      runner.on('end', function () {
-        if (_this.results.length == 0) {
-          console.log('\n', chalk.magenta.underline.bold('(TestRail Reporter)'));
-          console.warn('\n', 'No testcases were matched. Ensure that your tests are declared correctly and matches Cxxx', '\n');
-          return;
-        }
-        _this.testRail.publishResults(_this.results);
-      });
-      return _this;
-    }
+    var reporterOptions = options.reporterOptions;
+    _this.testRail = new testrail_1.TestRail(reporterOptions);
+    _this.isRun = false;
+    _this.validate(reporterOptions, 'domain');
+    _this.validate(reporterOptions, 'username');
+    _this.validate(reporterOptions, 'password');
+    _this.validate(reporterOptions, 'projectId');
+    _this.validate(reporterOptions, 'suiteId');
+    _this.validate(reporterOptions, 'createTestRun');
+    runner.on('start', function () {
+      console.log("Running Test Case...");
+      var executionDateTime = moment().format('L');
+      var name = (reporterOptions.runName || 'Automated test run') + " - " + executionDateTime;
+      var description = executionDateTime;
+    });
+    runner.on('pass', function (test) {
+      var _a;
+      var caseIds = shared_1.titleToCaseIds(test.title);
+      if (caseIds.length > 0) {
+        var results = caseIds.map(function (caseId) {
+          return {
+            case_id: caseId,
+            status_id: testrail_interface_1.Status.Passed,
+            comment: "Execution time: " + test.duration + "ms",
+          };
+        });
+        (_a = _this.results).push.apply(_a, results);
+      }
+    });
+    runner.on('fail', function (test) {
+      var _a;
+      var caseIds = shared_1.titleToCaseIds(test.title);
+      if (caseIds.length > 0) {
+        var results = caseIds.map(function (caseId) {
+          return {
+            case_id: caseId,
+            status_id: testrail_interface_1.Status.Automation_fails,
+            comment: "" + test.err.message,
+          };
+        });
+        (_a = _this.results).push.apply(_a, results);
+      }
+    });
+    runner.on('end', function () {
+      if (_this.results.length == 0) {
+        console.log('\n', chalk.magenta.underline.bold('(TestRail Reporter)'));
+        console.warn('\n', 'No testcases were matched. Ensure that your tests are declared correctly and matches Cxxx', '\n');
+        return;
+      }
+      _this.testRail.publishResults(_this.results);
+    });
+    return _this;
   }
   CypressTestRailReporter.prototype.validate = function (options, name) {
     if (options == null) {
