@@ -25,6 +25,8 @@ var TestRail = /** @class */ (function () {
                 console.log('\n', chalk.magenta.underline.bold('(TestRail Reporter)'));
                 console.log('\n', " - Results are published to " + chalk.magenta("https://" + _this.options.domain + "/index.php?/runs/view/" + _this.runId), '\n');
             }).catch(function (error) {
+                console.log("We are in the publishToAPI function -Error function!");
+                console.log(error);
                 return console.error(error);
             });
         };
