@@ -1,5 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", {value: true});
 var axios = require('axios');
 var chalk = require('chalk');
 var moment = require("moment");
@@ -10,23 +10,29 @@ var TestRail = /** @class */ (function () {
     }
     TestRail.prototype.publishResults = function (results) {
         var _this = this;
-        axios({
-            method: 'post',
-            url: this.base + "/add_results_for_cases/" + this.options.runId,
-            headers: { 'Content-Type': 'application/json' },
-            auth: {
-                username: this.options.username,
-                password: this.options.password,
-            },
-            data: JSON.stringify({ results: results }),
-        })
-            .then(function (response) {
+        var publishToAPI = function () {
+            console.log("We are in the publishToAPI function - Ready to send it to test rail!")
+            axios({
+                method: 'post',
+                url: _this.base + "/add_results_for_cases/" + _this.runId,
+                headers: {'Content-Type': 'application/json'},
+                auth: {
+                    username: _this.options.username,
+                    password: _this.options.password,
+                },
+                data: JSON.stringify({results: results}),
+            }).then(function (response) {
                 console.log('\n', chalk.magenta.underline.bold('(TestRail Reporter)'));
-                console.log('\n', " - Results are published to " + chalk.magenta("https://" + _this.domain + "/index.php?/runs/view/" + _this.runId), '\n');
-            })
-            .catch(function (error) { return console.error(error); });
+                console.log('\n', " - Results are published to " + chalk.magenta("https://" + _this.options.domain + "/index.php?/runs/view/" + _this.runId), '\n');
+            }).catch(function (error) {
+                return console.error(error);
+            });
+        };
+        this.runId = this.options.runId;
+        console.log("Publishing results to existing run: " + this.runId);
+        publishToAPI();
+        console.log("The publishing results is complete!!!")
     };
-    // };
     return TestRail;
 }());
 exports.TestRail = TestRail;

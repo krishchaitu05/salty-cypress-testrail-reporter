@@ -11,6 +11,7 @@ var TestRail = /** @class */ (function () {
     TestRail.prototype.publishResults = function (results) {
         var _this = this;
         var publishToAPI = function () {
+            console.log("We are in the publishToAPI function - Ready to send it to test rail!")
             axios({
                 method: 'post',
                 url: _this.base + "/add_results_for_cases/" + _this.runId,
@@ -30,6 +31,7 @@ var TestRail = /** @class */ (function () {
         this.runId = this.options.runId;
         console.log("Publishing results to existing run: " + this.runId);
         publishToAPI();
+        console.log("The publishing results is complete!!!")
     };
     return TestRail;
 }());
